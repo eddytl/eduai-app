@@ -1,0 +1,27 @@
+import User from '../models/User.model.js'
+
+export const getProfile = async (req, res) => {
+  try {
+    const user = await User.findById(req.user.id).select('-password_hash')
+    if (!user) return res.status(404).json({ message: 'Utilisateur introuvable' })
+    res.json(user)
+  } catch (err) {
+    res.status(500).json({ message: 'Erreur serveur', error: err.message })
+  }
+}
+
+export const updateProfile = async (req, res) => {
+  try {
+    const { name, classe, serie, langue } = req.body
+    const user = await User.findByIdAndUpdate(
+      req.user.id,
+      { name, classe, serie, langue },
+      { new: true, runValidators: true }
+    ).select('-password_hash')
+
+    if (!user) return res.status(404).json({ message: 'Utilisateur introuvable' })
+    res.json(user)
+  } catch (err) {
+    res.status(500).json({ message: 'Erreur serveur', error: err.message })
+  }
+}

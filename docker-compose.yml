@@ -1,0 +1,70 @@
+services:
+
+  # ─── Base de données ────────────────────────────────────────────
+  mongodb:
+    image: mongo:7
+    container_name: eduai_mongodb
+    restart: unless-stopped
+    volumes:
+      - mongo_data:/data/db
+    networks:
+      - eduai_network
+
+  # ─── API CRUD ───────────────────────────────────────────────────
+  api:
+    build: ./backend/api
+    container_name: eduai_api
+    restart: unless-stopped
+    env_file: ./backend/api/.env
+    environment:
+      MONGODB_URI: mongodb://mongodb:27017/eduai_cameroun
+    depends_on:
+      - mongodb
+    networks:
+      - eduai_network
+
+  # ─── MCP Server ─────────────────────────────────────────────────
+  mcp-server:
+    build: ./backend/mcp-server
+    container_name: eduai_mcp_server
+    restart: unless-stopped
+    env_file: ./backend/mcp-server/.env
+    environment:
+      MONGODB_URI: mongodb://mongodb:27017/eduai_cameroun
+    depends_on:
+      - mongodb
+    networks:
+      - eduai_network
+
+  # ─── Agent IA ───────────────────────────────────────────────────
+  agent:
+    build: ./backend/agent
+    container_name: eduai_agent
+    restart: unless-stopped
+    env_file: ./backend/agent/.env
+    environment:
+      MCP_SERVER_URL: http://mcp-server:3001/mcp
+    depends_on:
+      - mcp-server
+    networks:
+      - eduai_network
+
+  # ─── Frontend (nginx) ───────────────────────────────────────────
+  frontend:
+    build: ./frontend
+    container_name: eduai_frontend
+    restart: unless-stopped
+    ports:
+      - "80:80"
+    depends_on:
+      - api
+      - agent
+    networks:
+      - eduai_network
+
+volumes:
+  mongo_data:
+
+networks:
+  eduai_network:
+    driver: bridge
