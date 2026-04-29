@@ -1,4 +1,4 @@
-import Mistral from '@mistralai/mistralai'
+import { Mistral } from '@mistralai/mistralai'
 import { Client } from '@modelcontextprotocol/sdk/client/index.js'
 import { StreamableHTTPClientTransport } from '@modelcontextprotocol/sdk/client/streamableHttp.js'
 import { buildSystemPrompt } from './prompts/tutor.prompt.js'
@@ -37,5 +37,24 @@ export async function chat({ userId, messages }) {
   return {
     reply: response.choices[0].message.content,
     student: { name: student.name, classe: student.classe, serie: student.serie }
+  }
+}
+
+export async function chatStream({ userId, messages, onChunk, signal }) {
+  const student = await getStudentProfile(userId)
+  const systemPrompt = buildSystemPrompt(student)
+
+  const stream = await mistral.chat.stream({
+    model: 'mistral-large-latest',
+    messages: [
+      { role: 'system', content: systemPrompt },
+      ...messages
+    ]
+  })
+
+  for await (const chunk of stream) {
+    if (signal?.aborted) break
+    const delta = chunk.data.choices[0]?.delta?.content || ''
+    if (delta) onChunk(delta)
   }
 }

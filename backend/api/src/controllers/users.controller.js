@@ -20,7 +20,7 @@ export const updateProfile = async (req, res) => {
     ).select('-password_hash')
 
     if (!user) return res.status(404).json({ message: 'Utilisateur introuvable' })
-    res.json(user)
+    res.json({ id: user._id, name: user.name, email: user.email, classe: user.classe, serie: user.serie, langue: user.langue, plan: user.plan })
   } catch (err) {
     res.status(500).json({ message: 'Erreur serveur', error: err.message })
   }

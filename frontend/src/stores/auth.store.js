@@ -28,6 +28,12 @@ export const useAuthStore = defineStore('auth', () => {
     setSession(data)
   }
 
+  async function updateProfile(payload) {
+    const { data } = await axios.put(`${API}/api/users/profile`, payload)
+    user.value = data
+    localStorage.setItem('user', JSON.stringify(data))
+  }
+
   function logout() {
     token.value = null
     user.value = null
@@ -41,5 +47,5 @@ export const useAuthStore = defineStore('auth', () => {
     axios.defaults.headers.common['Authorization'] = `Bearer ${token.value}`
   }
 
-  return { token, user, isLoggedIn, login, register, logout }
+  return { token, user, isLoggedIn, login, register, updateProfile, logout }
 })
