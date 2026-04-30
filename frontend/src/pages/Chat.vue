@@ -114,20 +114,20 @@
           <div v-if="showAccountMenu" class="absolute bottom-full left-0 right-0 mb-2 mx-0 bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-xl shadow-xl overflow-hidden z-50">
 
             <!-- En-tête compte -->
-            <div class="px-4 py-3 bg-gray-50 dark:bg-gray-900 border-b border-gray-100 dark:border-gray-700">
+            <div class="px-3 py-2 bg-gray-50 dark:bg-gray-900 border-b border-gray-100 dark:border-gray-700">
               <p class="text-xs text-gray-400 dark:text-gray-500 truncate">{{ auth.user?.email }}</p>
-              <p class="text-sm font-semibold text-gray-900 dark:text-gray-100 mt-0.5">{{ auth.user?.name }}</p>
-              <p class="text-xs text-gray-500 dark:text-gray-400 mt-0.5">
+              <p class="text-sm font-semibold text-gray-900 dark:text-gray-100">{{ auth.user?.name }}</p>
+              <p class="text-xs text-gray-500 dark:text-gray-400">
                 {{ auth.user?.classe }}{{ auth.user?.serie !== 'sans' ? ' · ' + auth.user?.serie : '' }}
               </p>
             </div>
 
             <!-- Navigation -->
-            <div class="py-1">
+            <div class="py-0.5">
               <RouterLink
                 to="/profile"
                 @click="showAccountMenu = false"
-                class="flex items-center gap-3 px-4 py-2.5 text-sm text-gray-700 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-gray-700 transition"
+                class="flex items-center gap-2 px-3 py-1.5 text-sm text-gray-700 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-gray-700 transition"
               >
                 <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4 text-gray-400 dark:text-gray-500 shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                   <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"/>
@@ -137,18 +137,19 @@
             </div>
 
             <!-- Plan -->
-            <div class="border-t border-gray-100 dark:border-gray-700 py-1">
-              <div class="px-4 py-2 flex items-center gap-3">
+            <div class="border-t border-gray-100 dark:border-gray-700 py-0.5">
+              <div class="px-3 py-1.5 flex items-center gap-2">
                 <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4 text-gray-400 dark:text-gray-500 shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                   <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4M7.835 4.697a3.42 3.42 0 001.946-.806 3.42 3.42 0 014.438 0 3.42 3.42 0 001.946.806 3.42 3.42 0 013.138 3.138 3.42 3.42 0 00.806 1.946 3.42 3.42 0 010 4.438 3.42 3.42 0 00-.806 1.946 3.42 3.42 0 01-3.138 3.138 3.42 3.42 0 00-1.946.806 3.42 3.42 0 01-4.438 0 3.42 3.42 0 00-1.946-.806 3.42 3.42 0 01-3.138-3.138 3.42 3.42 0 00-.806-1.946 3.42 3.42 0 010-4.438 3.42 3.42 0 00.806-1.946 3.42 3.42 0 013.138-3.138z"/>
                 </svg>
-                <span class="text-sm text-gray-600 dark:text-gray-300">
-                  {{ auth.user?.plan === 'premium' ? 'Premium — Messages illimités' : 'Gratuit — 10 messages / jour' }}
+                <span class="text-xs text-gray-600 dark:text-gray-300">
+                  {{ auth.user?.plan === 'premium' ? 'Premium — illimité' : 'Gratuit — 10 msg/jour' }}
                 </span>
               </div>
               <button
                 v-if="auth.user?.plan !== 'premium'"
-                class="w-full flex items-center gap-3 px-4 py-2.5 text-sm text-blue-600 hover:bg-blue-50 dark:hover:bg-blue-900/20 transition font-medium"
+                @click="showAccountMenu = false; $router.push('/subscribe')"
+                class="w-full flex items-center gap-2 px-3 py-1.5 text-sm text-blue-600 hover:bg-blue-50 dark:hover:bg-blue-900/20 transition font-medium"
               >
                 <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4 shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                   <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11.049 2.927c.3-.921 1.603-.921 1.902 0l1.519 4.674a1 1 0 00.95.69h4.915c.969 0 1.371 1.24.588 1.81l-3.976 2.888a1 1 0 00-.363 1.118l1.518 4.674c.3.922-.755 1.688-1.538 1.118l-3.976-2.888a1 1 0 00-1.176 0l-3.976 2.888c-.783.57-1.838-.197-1.538-1.118l1.518-4.674a1 1 0 00-.363-1.118l-3.976-2.888c-.784-.57-.38-1.81.588-1.81h4.914a1 1 0 00.951-.69l1.519-4.674z"/>
@@ -158,10 +159,10 @@
             </div>
 
             <!-- Déconnexion -->
-            <div class="border-t border-gray-100 dark:border-gray-700 py-1">
+            <div class="border-t border-gray-100 dark:border-gray-700 py-0.5">
               <button
                 @click="handleLogout"
-                class="w-full flex items-center gap-3 px-4 py-2.5 text-sm text-red-500 hover:bg-red-50 dark:hover:bg-red-900/20 transition"
+                class="w-full flex items-center gap-2 px-3 py-1.5 text-sm text-red-500 hover:bg-red-50 dark:hover:bg-red-900/20 transition"
               >
                 <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4 shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                   <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1"/>
@@ -332,11 +333,29 @@
                   v-html="formatMessage(msg.content, 'user')"
                 />
               </div>
-              <div
-                v-else
-                class="text-sm text-gray-800 dark:text-gray-200 leading-relaxed prose-message"
-                v-html="formatMessage(msg.content, 'assistant')"
-              />
+              <div v-else class="group/msg relative">
+                <div
+                  class="text-sm text-gray-800 dark:text-gray-200 leading-relaxed prose-message"
+                  v-html="formatMessage(msg.content, 'assistant')"
+                />
+                <div class="flex items-center gap-1 mt-2 opacity-0 group-hover/msg:opacity-100 transition-opacity duration-150">
+                  <button
+                    @click="copyMessage(msg.content, i)"
+                    :title="copiedIdx === i ? 'Copié !' : 'Copier la réponse'"
+                    class="flex items-center gap-1.5 text-xs text-gray-400 dark:text-gray-500 hover:text-gray-600 dark:hover:text-gray-300 transition-colors px-2 py-1 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-800"
+                  >
+                    <svg v-if="copiedIdx !== i" xmlns="http://www.w3.org/2000/svg" class="w-3.5 h-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 16H6a2 2 0 01-2-2V6a2 2 0 012-2h8a2 2 0 012 2v2m-6 12h8a2 2 0 002-2v-8a2 2 0 00-2-2h-8a2 2 0 00-2 2v8a2 2 0 002 2z"/>
+                    </svg>
+                    <svg v-else xmlns="http://www.w3.org/2000/svg" class="w-3.5 h-3.5 text-green-500" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M5 13l4 4L19 7"/>
+                    </svg>
+                    <span :class="copiedIdx === i ? 'text-green-500' : ''">
+                      {{ copiedIdx === i ? 'Copié' : 'Copier' }}
+                    </span>
+                  </button>
+                </div>
+              </div>
             </div>
 
             <!-- 3 points (avant 1er chunk) -->
@@ -534,6 +553,7 @@ const showAccountMenu = ref(false)
 const accountMenuRef = ref(null)
 const currentView = ref('chat')
 const isDark = ref(document.documentElement.classList.contains('dark'))
+const copiedIdx = ref(null)
 const searchOpen = ref(false)
 const searchQuery = ref('')
 const discussionsSearch = ref('')
@@ -651,6 +671,16 @@ function closeSearch() {
 function selectSearchResult(id) {
   openConversation(id)
   closeSearch()
+}
+
+async function copyMessage(content, idx) {
+  try {
+    await navigator.clipboard.writeText(content)
+    copiedIdx.value = idx
+    setTimeout(() => { copiedIdx.value = null }, 2000)
+  } catch {
+    // clipboard non disponible (HTTP sans HTTPS)
+  }
 }
 
 function toggleTheme() {

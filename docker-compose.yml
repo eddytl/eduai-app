@@ -44,6 +44,8 @@ services:
     env_file: ./backend/agent/.env
     environment:
       MCP_SERVER_URL: http://mcp-server:3001/mcp
+    extra_hosts:
+      - "host.docker.internal:host-gateway"
     depends_on:
       - mcp-server
     networks:

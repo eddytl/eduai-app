@@ -19,6 +19,11 @@ const routes = [
     path: '/profile',
     component: () => import('../pages/Profile.vue'),
     meta: { requiresAuth: true }
+  },
+  {
+    path: '/subscribe',
+    component: () => import('../pages/Subscribe.vue'),
+    meta: { requiresAuth: true }
   }
 ]
 
