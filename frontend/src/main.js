@@ -1,12 +1,5 @@
 import './assets/main.css'
 
-// Initialise le thème avant le rendu (évite le flash)
-const savedTheme = localStorage.getItem('eduai_theme')
-const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches
-if (savedTheme === 'dark' || (!savedTheme && prefersDark)) {
-  document.documentElement.classList.add('dark')
-}
-
 import { createApp } from 'vue'
 import { createPinia } from 'pinia'
 import axios from 'axios'

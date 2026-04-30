@@ -82,6 +82,11 @@ export const useChatStore = defineStore('chat', () => {
     }
   }
 
+  function renameConversation(id, title) {
+    const conv = conversations.value.find(c => c.id === id)
+    if (conv && title.trim()) conv.title = title.trim()
+  }
+
   async function sendMessage(userId, content) {
     if (!currentId.value) newConversation()
 
@@ -176,7 +181,7 @@ export const useChatStore = defineStore('chat', () => {
   return {
     conversations, currentId, messages,
     loading, streaming, error,
-    newConversation, switchConversation, deleteConversation,
+    newConversation, switchConversation, deleteConversation, renameConversation,
     sendMessage, clearMessages
   }
 })

@@ -4,6 +4,7 @@ import cors from 'cors'
 import mongoose from 'mongoose'
 import authRoutes from './routes/auth.routes.js'
 import userRoutes from './routes/users.routes.js'
+import adminRoutes from './routes/admin.routes.js'
 
 const app = express()
 const PORT = process.env.PORT || 3000
@@ -13,6 +14,7 @@ app.use(express.json())
 
 app.use('/api/auth', authRoutes)
 app.use('/api/users', userRoutes)
+app.use('/api/admin', adminRoutes)
 
 app.get('/health', (req, res) => res.json({ status: 'ok', service: 'api' }))
 
